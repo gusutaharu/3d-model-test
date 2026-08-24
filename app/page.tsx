@@ -1,43 +1,36 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
-import * as THREE from "three";
-
-function Shoe() {
-  type GLTFResult = {
-    nodes: {
-      [key: string]: THREE.Mesh;
-    };
-    materials: {
-      [key: string]: THREE.MeshStandardMaterial;
-    };
-  };
-  const { nodes, materials } = useGLTF(
-    "models/shoe-draco.glb",
-  ) as unknown as GLTFResult;
-  console.log("Nodes (パーツ一覧):", nodes);
-  console.log("Materials (マテリアル一覧):", materials);
-  return (
-    <group>
-      <mesh geometry={nodes.shoe.geometry} material={materials.laces} />
-      <mesh geometry={nodes.shoe_1.geometry} material={materials.mesh} />
-      <mesh geometry={nodes.shoe_2.geometry} material={materials.caps} />
-      <mesh geometry={nodes.shoe_3.geometry} material={materials.inner} />
-      <mesh geometry={nodes.shoe_4.geometry} material={materials.sole} />
-      <mesh geometry={nodes.shoe_5.geometry} material={materials.stripes} />
-      <mesh geometry={nodes.shoe_6.geometry} material={materials.band} />
-      <mesh geometry={nodes.shoe_7.geometry} material={materials.patch} />
-    </group>
-  );
-}
+import { CameraControls, ContactShadows, Environment } from "@react-three/drei";
+import { Shoe } from "./components/shoe";
 
 export default function Home() {
   return (
-    <div className="canvasContainer">
-      <Canvas>
+    <div className="canvasContainer w-full h-125 bg-gray-100">
+      <Canvas camera={{ position: [-3, 0, -4], fov: 40 }}>
         <ambientLight intensity={1} />
-        <Shoe />
+        <Environment preset="city" />
+
+        <group>
+          <Shoe
+            position={[-0.45, 0.1, 0]}
+            rotation={[-Math.PI / 8, -Math.PI / 2, 0]}
+            scale={[-1, 1, 1]}
+          />
+          <Shoe
+            position={[0.45, 0.1, 0]}
+            rotation={[-Math.PI / 8, Math.PI / 2, 0]}
+            scale={[1, 1, 1]}
+          />
+        </group>
+        <ContactShadows
+          position={[0, -0.7, 0]} // 影の高さ（靴の少し下）
+          opacity={.8} // 影の濃さ (0〜1)
+          scale={7} // 影の広がりサイズ
+          blur={.5} // 影のぼかし具合
+          far={0.8} // 影を捉える距離
+        />
+        <CameraControls makeDefault />
       </Canvas>
     </div>
   );

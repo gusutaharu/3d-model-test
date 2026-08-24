@@ -11,7 +11,7 @@
 !.yarn/versions
 
 #一時的に
-app/components/
+app/component/
 
 # testing
 /coverage
