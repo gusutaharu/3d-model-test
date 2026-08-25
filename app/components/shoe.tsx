@@ -5,12 +5,14 @@ export interface ShoeModelProps {
   position?: [number, number, number];
   rotation?: [number, number, number];
   scale?: [number, number, number];
+  onSelectPart: (partName: string) => void;
 }
 
 export function Shoe({
   position = [0, 0, 0],
   rotation = [0, 0, 0],
   scale = [1, 1, 1],
+  onSelectPart,
 }: ShoeModelProps) {
   type GLTFResult = {
     nodes: {
@@ -24,7 +26,21 @@ export function Shoe({
     "models/shoe-draco.glb",
   ) as unknown as GLTFResult;
   return (
-    <group position={position} rotation={rotation} scale={scale}>
+    <group
+      position={position}
+      rotation={rotation}
+      scale={scale}
+      onClick={(e: {
+        stopPropagation: () => void;
+        object: { material?: { name: string } };
+      }) => {
+        e.stopPropagation();
+        const clickedMaterialName = e.object.material?.name;
+        if (clickedMaterialName) {
+          onSelectPart(clickedMaterialName);
+        }
+      }}
+    >
       <mesh geometry={nodes.shoe.geometry} material={materials.laces} />
       <mesh geometry={nodes.shoe_1.geometry} material={materials.mesh} />
       <mesh geometry={nodes.shoe_2.geometry} material={materials.caps} />
