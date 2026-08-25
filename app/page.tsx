@@ -7,7 +7,7 @@ import { Shoe } from "./components/shoe";
 export default function Home() {
   return (
     <div className="canvasContainer w-full h-125 bg-gray-100">
-      <Canvas camera={{ position: [-3, 0, -4], fov: 40 }}>
+      <Canvas camera={{ position: [-3, 0, -4], fov: 30 }}>
         <ambientLight intensity={1} />
         <Environment preset="city" />
 
@@ -24,11 +24,11 @@ export default function Home() {
           />
         </group>
         <ContactShadows
-          position={[0, -0.7, 0]} // 影の高さ（靴の少し下）
-          opacity={.8} // 影の濃さ (0〜1)
-          scale={7} // 影の広がりサイズ
-          blur={.5} // 影のぼかし具合
-          far={0.8} // 影を捉える距離
+          position={[0, -0.7, 0]} 
+          opacity={.8}
+          scale={7}
+          blur={.5}
+          far={0.8}
         />
         <CameraControls makeDefault />
       </Canvas>
