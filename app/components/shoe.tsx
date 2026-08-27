@@ -5,6 +5,7 @@ export interface ShoeModelProps {
   position?: [number, number, number];
   rotation?: [number, number, number];
   scale?: [number, number, number];
+  partColors: Record<string, string>;
   onSelectPart: (partName: string) => void;
 }
 
@@ -12,6 +13,7 @@ export function Shoe({
   position = [0, 0, 0],
   rotation = [0, 0, 0],
   scale = [1, 1, 1],
+  partColors,
   onSelectPart,
 }: ShoeModelProps) {
   type GLTFResult = {
@@ -41,14 +43,46 @@ export function Shoe({
         }
       }}
     >
-      <mesh geometry={nodes.shoe.geometry} material={materials.laces} />
-      <mesh geometry={nodes.shoe_1.geometry} material={materials.mesh} />
-      <mesh geometry={nodes.shoe_2.geometry} material={materials.caps} />
-      <mesh geometry={nodes.shoe_3.geometry} material={materials.inner} />
-      <mesh geometry={nodes.shoe_4.geometry} material={materials.sole} />
-      <mesh geometry={nodes.shoe_5.geometry} material={materials.stripes} />
-      <mesh geometry={nodes.shoe_6.geometry} material={materials.band} />
-      <mesh geometry={nodes.shoe_7.geometry} material={materials.patch} />
+      <mesh
+        geometry={nodes.shoe.geometry}
+        material={materials.laces}
+        material-color={partColors.laces}
+      />
+      <mesh
+        geometry={nodes.shoe_1.geometry}
+        material={materials.mesh}
+        material-color={partColors.mesh}
+      />
+      <mesh
+        geometry={nodes.shoe_2.geometry}
+        material={materials.caps}
+        material-color={partColors.caps}
+      />
+      <mesh
+        geometry={nodes.shoe_3.geometry}
+        material={materials.inner}
+        material-color={partColors.inner}
+      />
+      <mesh
+        geometry={nodes.shoe_4.geometry}
+        material={materials.sole}
+        material-color={partColors.sole}
+      />
+      <mesh
+        geometry={nodes.shoe_5.geometry}
+        material={materials.stripes}
+        material-color={partColors.stripes}
+      />
+      <mesh
+        geometry={nodes.shoe_6.geometry}
+        material={materials.band}
+        material-color={partColors.band}
+      />
+      <mesh
+        geometry={nodes.shoe_7.geometry}
+        material={materials.patch}
+        material-color={partColors.patch}
+      />
     </group>
   );
 }

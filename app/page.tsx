@@ -30,8 +30,28 @@ const PARTS_LIST = [
   { id: "patch", name: "パッチ" },
 ];
 
+const COLOR_PALETTE = [
+  { id: "white", hex: "#ffffff", name: "ホワイト" },
+  { id: "black", hex: "#1a1a1a", name: "ブラック" },
+  { id: "red", hex: "#e63946", name: "レッド" },
+  { id: "blue", hex: "#1d3557", name: "ネイビー" },
+  { id: "green", hex: "#2a9d8f", name: "グリーン" },
+  { id: "yellow", hex: "#e9c46a", name: "イエロー" },
+  { id: "orange", hex: "#f4a261", name: "オレンジ" },
+];
+
 export default function Home() {
   const [selectedPart, setSelectedPart] = useState<string | null>("mesh");
+  const [partColors, setPartColors] = useState<Record<string, string>>({
+    mesh: "#ffffff",
+    laces: "#ffffff",
+    sole: "#ffffff",
+    caps: "#ffffff",
+    inner: "#ffffff",
+    band: "#ffffff",
+    stripes: "#ffffff",
+    patch: "#ffffff",
+  });
   const cameraControlsRef = useRef<CameraControls | null>(null);
   const handleSelectPart = (partName: string) => {
     setSelectedPart(partName);
@@ -53,6 +73,14 @@ export default function Home() {
     handleSelectPart(PARTS_LIST[nextIndex].id);
   };
 
+  const handleColorChange = (color: string) => {
+    if (!selectedPart) return;
+    setPartColors((prev) => ({
+      ...prev,
+      [selectedPart]: color,
+    }));
+  };
+
   const currentPartObject = PARTS_LIST.find((part) => part.id === selectedPart);
 
   const currentIndex = PARTS_LIST.findIndex((part) => part.id === selectedPart);
@@ -72,12 +100,14 @@ export default function Home() {
               rotation={[-Math.PI / 8, -Math.PI / 2, 0]}
               scale={[-1, 1, 1]}
               onSelectPart={handleSelectPart}
+              partColors={partColors}
             />
             <Shoe
               position={[0.45, 0.1, 0]}
               rotation={[-Math.PI / 8, Math.PI / 2, 0]}
               scale={[1, 1, 1]}
               onSelectPart={handleSelectPart}
+              partColors={partColors}
             />
           </group>
           <ContactShadows
@@ -90,49 +120,73 @@ export default function Home() {
           <CameraControls ref={cameraControlsRef} makeDefault />
         </Canvas>
       </div>
-      <div className="p-8 flex items-center justify-center gap-6">
-        <button onClick={() => handleNavigate(-1)} aria-label="前の部位へ">
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            viewBox="0 0 24 24"
-            role="img"
-            width="24px"
-            height="24px"
-            fill="none"
-          >
-            <path
-              stroke="currentColor"
-              strokeWidth="1.5"
-              d="M11.021 18.967L4.055 12l6.966-6.967M4 12h17"
-            ></path>
-          </svg>
-        </button>
-        <div className="min-w-48 text-center">
-          <p className="text-xl font-bold text-[#111111]">
-            {currentPartObject ? currentPartObject.name : selectedPart}{" "}
-            <span className="font-normal text-[#757575]">
-              {currentNumber}/{totalCount}
-            </span>
-          </p>
+      <div className="p-8 flex flex-col items-center justify-center gap-6">
+        <div className="flex">
+          <button onClick={() => handleNavigate(-1)} aria-label="前の部位へ">
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 0 24 24"
+              role="img"
+              width="24px"
+              height="24px"
+              fill="none"
+            >
+              <path
+                stroke="currentColor"
+                strokeWidth="1.5"
+                d="M11.021 18.967L4.055 12l6.966-6.967M4 12h17"
+              ></path>
+            </svg>
+          </button>
+          <div className="min-w-48 text-center">
+            <p className="text-xl font-bold text-[#111111]">
+              {currentPartObject ? currentPartObject.name : selectedPart}{" "}
+              <span className="font-normal text-[#757575]">
+                {currentNumber}/{totalCount}
+              </span>
+            </p>
+          </div>
+          <button onClick={() => handleNavigate(1)} aria-label="次の部位へ">
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 0 24 24"
+              role="img"
+              width="24px"
+              height="24px"
+              fill="none"
+            >
+              <path
+                stroke="currentColor"
+                strokeWidth="1.5"
+                d="M12.979 18.967L19.945 12 12.98 5.033M20 12H3"
+              ></path>
+            </svg>
+          </button>
         </div>
-        <button onClick={() => handleNavigate(1)} aria-label="次の部位へ">
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            viewBox="0 0 24 24"
-            role="img"
-            width="24px"
-            height="24px"
-            fill="none"
-          >
-            <path
-              stroke="currentColor"
-              strokeWidth="1.5"
-              d="M12.979 18.967L19.945 12 12.98 5.033M20 12H3"
-            ></path>
-          </svg>
-        </button>
+        <div>
+          <div className="flex items-center justify-center gap-4">
+            {COLOR_PALETTE.map((color) => {
+              const isSelected = selectedPart
+                ? partColors[selectedPart] === color.hex
+                : false;
+              return (
+                <div key={color.id} className="m-2 text-center">
+                  <button
+                    onClick={() => handleColorChange(color.hex)}
+                    className={`w-8 h-8 rounded-full border border-gray-300 transition-all ${
+                      isSelected ? "ring-1 ring-offset-3" : "hover:scale-105"
+                    }`}
+                    style={{ backgroundColor: color.hex }}
+                    title={color.name}
+                  />
+                  <div className="text-xs mt-2">{color.name}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </>
   );
