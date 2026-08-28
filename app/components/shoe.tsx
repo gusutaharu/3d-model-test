@@ -7,7 +7,10 @@ export interface ShoeModelProps {
   scale?: [number, number, number];
   partColors: Record<string, string>;
   onSelectPart: (partName: string) => void;
+  flashingPart?: string | null;
 }
+
+const FLASH_COLOR = "#ffffff";
 
 export function Shoe({
   position = [0, 0, 0],
@@ -15,6 +18,7 @@ export function Shoe({
   scale = [1, 1, 1],
   partColors,
   onSelectPart,
+  flashingPart,
 }: ShoeModelProps) {
   type GLTFResult = {
     nodes: {
@@ -27,6 +31,12 @@ export function Shoe({
   const { nodes, materials } = useGLTF(
     "models/shoe-draco.glb",
   ) as unknown as GLTFResult;
+
+  const getColor = (partName: string) => {
+    return flashingPart === partName
+      ? FLASH_COLOR
+      : partColors[partName] || "#ffffff";
+  };
   return (
     <group
       position={position}
@@ -46,42 +56,42 @@ export function Shoe({
       <mesh
         geometry={nodes.shoe.geometry}
         material={materials.laces}
-        material-color={partColors.laces}
+        material-color={getColor("laces")}
       />
       <mesh
         geometry={nodes.shoe_1.geometry}
         material={materials.mesh}
-        material-color={partColors.mesh}
+        material-color={getColor("mesh")}
       />
       <mesh
         geometry={nodes.shoe_2.geometry}
         material={materials.caps}
-        material-color={partColors.caps}
+        material-color={getColor("caps")}
       />
       <mesh
         geometry={nodes.shoe_3.geometry}
         material={materials.inner}
-        material-color={partColors.inner}
+        material-color={getColor("inner")}
       />
       <mesh
         geometry={nodes.shoe_4.geometry}
         material={materials.sole}
-        material-color={partColors.sole}
+        material-color={getColor("sole")}
       />
       <mesh
         geometry={nodes.shoe_5.geometry}
         material={materials.stripes}
-        material-color={partColors.stripes}
+        material-color={getColor("stripes")}
       />
       <mesh
         geometry={nodes.shoe_6.geometry}
         material={materials.band}
-        material-color={partColors.band}
+        material-color={getColor("band")}
       />
       <mesh
         geometry={nodes.shoe_7.geometry}
         material={materials.patch}
-        material-color={partColors.patch}
+        material-color={getColor("patch")}
       />
     </group>
   );

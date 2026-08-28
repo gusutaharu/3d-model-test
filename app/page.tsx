@@ -43,22 +43,31 @@ const COLOR_PALETTE = [
 export default function Home() {
   const [selectedPart, setSelectedPart] = useState<string | null>("mesh");
   const [partColors, setPartColors] = useState<Record<string, string>>({
-    mesh: "#ffffff",
-    laces: "#ffffff",
-    sole: "#ffffff",
-    caps: "#ffffff",
-    inner: "#ffffff",
-    band: "#ffffff",
-    stripes: "#ffffff",
-    patch: "#ffffff",
+    mesh: "#1d3557",
+    laces: "#e9c46a",
+    sole: "#e9c46a",
+    caps: "#1a1a1a",
+    inner: "#1d3557",
+    band: "#2a9d8f",
+    stripes: "#e9c46a",
+    patch: "#e9c46a",
   });
+
+  const [flashingPart, setFlashingPart] = useState<string | null>(null);
   const cameraControlsRef = useRef<CameraControls | null>(null);
+  const triggerFlash = (partName: string) => {
+    setFlashingPart(partName);
+    setTimeout(() => {
+      setFlashingPart(null);
+    }, 600);
+  };
   const handleSelectPart = (partName: string) => {
     setSelectedPart(partName);
     const targetView = CAMERA_VIEWS[partName];
     if (targetView && cameraControlsRef.current) {
       cameraControlsRef.current.setLookAt(...targetView, true);
     }
+    triggerFlash(partName);
   };
 
   const handleNavigate = (direction: number) => {
@@ -79,6 +88,7 @@ export default function Home() {
       ...prev,
       [selectedPart]: color,
     }));
+    triggerFlash(selectedPart);
   };
 
   const currentPartObject = PARTS_LIST.find((part) => part.id === selectedPart);
@@ -101,6 +111,7 @@ export default function Home() {
               scale={[-1, 1, 1]}
               onSelectPart={handleSelectPart}
               partColors={partColors}
+              flashingPart={flashingPart}
             />
             <Shoe
               position={[0.45, 0.1, 0]}
@@ -108,6 +119,7 @@ export default function Home() {
               scale={[1, 1, 1]}
               onSelectPart={handleSelectPart}
               partColors={partColors}
+              flashingPart={flashingPart}
             />
           </group>
           <ContactShadows
