@@ -59,7 +59,7 @@ export default function Home() {
     setFlashingPart(partName);
     setTimeout(() => {
       setFlashingPart(null);
-    }, 600);
+    }, 800);
   };
   const handleSelectPart = (partName: string) => {
     setSelectedPart(partName);
