@@ -55,11 +55,20 @@ export default function Home() {
 
   const [flashingPart, setFlashingPart] = useState<string | null>(null);
   const cameraControlsRef = useRef<CameraControls | null>(null);
+  const delayTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   const triggerFlash = (partName: string) => {
-    setFlashingPart(partName);
-    setTimeout(() => {
-      setFlashingPart(null);
-    }, 800);
+    if (delayTimerRef.current) clearTimeout(delayTimerRef.current);
+    if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
+
+    delayTimerRef.current = setTimeout(() => {
+      setFlashingPart(partName);
+
+      flashTimerRef.current = setTimeout(() => {
+        setFlashingPart(null);
+      }, 500);
+    }, 500); 
   };
   const handleSelectPart = (partName: string) => {
     setSelectedPart(partName);
@@ -88,7 +97,6 @@ export default function Home() {
       ...prev,
       [selectedPart]: color,
     }));
-    triggerFlash(selectedPart);
   };
 
   const currentPartObject = PARTS_LIST.find((part) => part.id === selectedPart);
@@ -99,7 +107,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="canvasContainer w-full h-125 bg-gray-100">
+      <div className="canvasContainer w-full h-150 bg-gray-100">
         <Canvas camera={{ position: [-3, 0, -4], fov: 30 }}>
           <ambientLight intensity={1} />
           <Environment preset="city" />
@@ -129,7 +137,11 @@ export default function Home() {
             blur={0.5}
             far={0.8}
           />
-          <CameraControls ref={cameraControlsRef} makeDefault />
+          <CameraControls
+            ref={cameraControlsRef}
+            makeDefault
+            smoothTime={0.3}
+          />
         </Canvas>
       </div>
       <div className="p-8 flex flex-col items-center justify-center gap-6">
