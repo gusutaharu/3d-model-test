@@ -55,28 +55,35 @@ export default function Home() {
 
   const [flashingPart, setFlashingPart] = useState<string | null>(null);
   const cameraControlsRef = useRef<CameraControls | null>(null);
-  const delayTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const pendingFlashPartRef = useRef<string | null>(null);
   const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const triggerFlash = (partName: string) => {
-    if (delayTimerRef.current) clearTimeout(delayTimerRef.current);
     if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
 
-    delayTimerRef.current = setTimeout(() => {
-      setFlashingPart(partName);
-
-      flashTimerRef.current = setTimeout(() => {
-        setFlashingPart(null);
-      }, 500);
-    }, 500); 
+    setFlashingPart(partName);
+    flashTimerRef.current = setTimeout(() => {
+      setFlashingPart(null);
+    }, 500);
   };
+
   const handleSelectPart = (partName: string) => {
+    if (selectedPart === partName) return;
+
     setSelectedPart(partName);
+
     const targetView = CAMERA_VIEWS[partName];
     if (targetView && cameraControlsRef.current) {
+      pendingFlashPartRef.current = partName;
       cameraControlsRef.current.setLookAt(...targetView, true);
     }
-    triggerFlash(partName);
+  };
+
+  const handleCameraRest = () => {
+    if (pendingFlashPartRef.current) {
+      triggerFlash(pendingFlashPartRef.current);
+      pendingFlashPartRef.current = null;
+    }
   };
 
   const handleNavigate = (direction: number) => {
@@ -141,6 +148,7 @@ export default function Home() {
             ref={cameraControlsRef}
             makeDefault
             smoothTime={0.3}
+            onRest={handleCameraRest}
           />
         </Canvas>
       </div>
