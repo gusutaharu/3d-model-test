@@ -171,8 +171,8 @@ export default function Home() {
               ></path>
             </svg>
           </button>
-          <div className="min-w-48 text-center">
-            <p className="text-xl font-bold text-[#111111]">
+          <div className="min-w-95 text-center">
+            <p className="text-xl text-[#111111]">
               {currentPartObject ? currentPartObject.name : selectedPart}{" "}
               <span className="font-normal text-[#757575]">
                 {currentNumber}/{totalCount}
@@ -198,7 +198,7 @@ export default function Home() {
           </button>
         </div>
         <div>
-          <div className="flex items-center justify-center gap-4">
+          <div className="mt-8 flex items-center justify-center gap-4">
             {COLOR_PALETTE.map((color) => {
               const isSelected = selectedPart
                 ? partColors[selectedPart] === color.hex
