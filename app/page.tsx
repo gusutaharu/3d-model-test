@@ -10,11 +10,11 @@ const CAMERA_VIEWS: Record<
   [number, number, number, number, number, number]
 > = {
   laces: [0, 0.8, -2.2, 0, 0.25, 0],
-  sole: [-4, 1, -4, 0, 0, 0],
+  sole: [-4, 1, -3, 0, 0, 0],
   caps: [0, 0.1, -2.4, 0, 0, 0],
-  inner: [-2, 3, 3, 0, 0.25, 0],
-  mesh: [-3, 0, -4, 0, 0, 0],
-  band: [0, 0.1, -2.4, 0, 0, 0],
+  inner: [-2, 2, 2, 0, 0, 0.2],
+  mesh: [-3, 2, -3, 0, 0, 0],
+  band: [0, 0.1, -3, 0, 0, 0],
   stripes: [-5, 0, 0, 0, 0, 0],
   patch: [0, 1, 3, 0, 0.25, 0],
 };
@@ -31,8 +31,8 @@ const PARTS_LIST = [
 ];
 
 const COLOR_PALETTE = [
-  { id: "white", hex: "#ffffff", name: "ホワイト" },
   { id: "black", hex: "#1a1a1a", name: "ブラック" },
+  { id: "white", hex: "#ffffff", name: "ホワイト" },
   { id: "red", hex: "#e63946", name: "レッド" },
   { id: "blue", hex: "#1d3557", name: "ネイビー" },
   { id: "green", hex: "#2a9d8f", name: "グリーン" },
@@ -115,7 +115,7 @@ export default function Home() {
   return (
     <>
       <div className="canvasContainer w-full h-150 bg-gray-100">
-        <Canvas camera={{ position: [-3, 0, -4], fov: 30 }}>
+        <Canvas camera={{ position: [-3, 2, -3], fov: 30 }}>
           <ambientLight intensity={1} />
           <Environment preset="city" />
 
@@ -213,7 +213,11 @@ export default function Home() {
                     style={{ backgroundColor: color.hex }}
                     title={color.name}
                   />
-                  <div className="text-xs mt-2">{color.name}</div>
+                  <div
+                    className={`text-xs mt-2  ${isSelected ? "opacity-100" : "opacity-0"}`}
+                  >
+                    {color.name}
+                  </div>{" "}
                 </div>
               );
             })}
