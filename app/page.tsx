@@ -40,6 +40,9 @@ const COLOR_PALETTE = [
   { id: "orange", hex: "#f4a261", name: "オレンジ" },
 ];
 
+const PRODUCT_NAME = "スニーカー";
+const PRODUCT_PRICE = "10,000";
+
 export default function Home() {
   const [selectedPart, setSelectedPart] = useState<string | null>("mesh");
   const [partColors, setPartColors] = useState<Record<string, string>>({
@@ -115,6 +118,12 @@ export default function Home() {
   return (
     <>
       <div className="canvasContainer w-full h-150 bg-gray-100">
+        <div className="absolute top-0 left-0 z-10 pointer-events-none px-5 py-11">
+          <div className="flex flex-col pl-6">
+            <span>{PRODUCT_NAME}</span>
+            <span>¥{PRODUCT_PRICE}</span>
+          </div>
+        </div>
         <Canvas camera={{ position: [-3, 2, -3], fov: 30 }}>
           <ambientLight intensity={1} />
           <Environment preset="city" />
