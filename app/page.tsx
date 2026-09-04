@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import { CameraControls, ContactShadows, Environment } from "@react-three/drei";
 import { Shoe } from "./components/shoe";
 import { useRef, useState } from "react";
+import { RiShare2Line } from "react-icons/ri";
 
 const CAMERA_VIEWS: Record<
   string,
@@ -118,10 +119,21 @@ export default function Home() {
   return (
     <>
       <div className="canvasContainer w-full h-150 bg-gray-100">
-        <div className="absolute top-0 left-0 z-10 pointer-events-none px-5 py-11">
+        <div className="absolute top-0 left-0 z-10 px-5 py-11 flex justify-between w-full">
           <div className="flex flex-col pl-6">
             <span>{PRODUCT_NAME}</span>
             <span>¥{PRODUCT_PRICE}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200"
+              aria-label="共有"
+            >
+              <RiShare2Line className="h-6 w-6" />
+            </button>
+            <button className="px-6 py-2 rounded-full border border-gray-200 font-bold">
+              完了
+            </button>
           </div>
         </div>
         <Canvas camera={{ position: [-3, 2, -3], fov: 30 }}>
