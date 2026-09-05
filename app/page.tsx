@@ -167,6 +167,8 @@ export default function Home() {
           />
           <CameraControls
             ref={cameraControlsRef}
+            minDistance={3}
+            maxDistance={7}
             makeDefault
             smoothTime={0.3}
             onRest={handleCameraRest}
