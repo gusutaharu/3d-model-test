@@ -5,6 +5,10 @@ import { CameraControls, ContactShadows, Environment } from "@react-three/drei";
 import { Shoe } from "./components/shoe";
 import { useRef, useState } from "react";
 import { RiShare2Line } from "react-icons/ri";
+import { SlMenu } from "react-icons/sl";
+import { SlArrowDown } from "react-icons/sl";
+
+import { IoIosArrowDown } from "react-icons/io";
 
 const CAMERA_VIEWS: Record<
   string,
@@ -176,7 +180,10 @@ export default function Home() {
         </Canvas>
       </div>
       <div className="p-8 flex flex-col items-center justify-center gap-6">
-        <div className="flex">
+        <div className="flex justify-between w-full">
+          <button className="flex items-center justify-center w-10 h-10 border rounded-full border-gray-200">
+            <SlArrowDown className=" h-4 w-4 " />
+          </button>
           <button onClick={() => handleNavigate(-1)} aria-label="前の部位へ">
             <svg
               aria-hidden="true"
@@ -218,6 +225,10 @@ export default function Home() {
                 d="M12.979 18.967L19.945 12 12.98 5.033M20 12H3"
               ></path>
             </svg>
+          </button>
+          <button className="flex items-center gap-2 px-6 py-2 border rounded-full border-gray-200">
+            <SlMenu className="h-6 w-6" />
+            メニュー
           </button>
         </div>
         <div>
