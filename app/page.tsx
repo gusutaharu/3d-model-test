@@ -7,8 +7,8 @@ import { useRef, useState } from "react";
 import { RiShare2Line } from "react-icons/ri";
 import { SlMenu } from "react-icons/sl";
 import { SlArrowDown } from "react-icons/sl";
-
-import { IoIosArrowDown } from "react-icons/io";
+import { HiArrowRight } from "react-icons/hi2";
+import { HiArrowLeft } from "react-icons/hi2";
 
 const CAMERA_VIEWS: Record<
   string,
@@ -180,56 +180,34 @@ export default function Home() {
         </Canvas>
       </div>
       <div className="p-8 flex flex-col items-center justify-center gap-6">
-        <div className="flex justify-between w-full">
-          <button className="flex items-center justify-center w-10 h-10 border rounded-full border-gray-200">
-            <SlArrowDown className=" h-4 w-4 " />
-          </button>
-          <button onClick={() => handleNavigate(-1)} aria-label="前の部位へ">
-            <svg
-              aria-hidden="true"
-              focusable="false"
-              viewBox="0 0 24 24"
-              role="img"
-              width="24px"
-              height="24px"
-              fill="none"
-            >
-              <path
-                stroke="currentColor"
-                strokeWidth="1.5"
-                d="M11.021 18.967L4.055 12l6.966-6.967M4 12h17"
-              ></path>
-            </svg>
-          </button>
-          <div className="min-w-95 text-center">
-            <p className="text-xl text-[#111111]">
-              {currentPartObject ? currentPartObject.name : selectedPart}{" "}
-              <span className="font-normal text-[#757575]">
-                {currentNumber}/{totalCount}
-              </span>
-            </p>
+        <div className="grid grid-cols-3 items-center w-full min-w-0">
+          <div className="justify-self-start">
+            <button className="flex items-center justify-center w-10 h-10 border rounded-full border-gray-200">
+              <SlArrowDown className=" h-4 w-4 " />
+            </button>
           </div>
-          <button onClick={() => handleNavigate(1)} aria-label="次の部位へ">
-            <svg
-              aria-hidden="true"
-              focusable="false"
-              viewBox="0 0 24 24"
-              role="img"
-              width="24px"
-              height="24px"
-              fill="none"
-            >
-              <path
-                stroke="currentColor"
-                strokeWidth="1.5"
-                d="M12.979 18.967L19.945 12 12.98 5.033M20 12H3"
-              ></path>
-            </svg>
-          </button>
-          <button className="flex items-center gap-2 px-6 py-2 border rounded-full border-gray-200">
-            <SlMenu className="h-6 w-6" />
-            メニュー
-          </button>
+          <div className="flex items-center justify-center">
+            <button onClick={() => handleNavigate(-1)} aria-label="前の部位へ">
+              <HiArrowLeft className="h-5 w-5" />
+            </button>
+            <div className="w-full min-w-64 max-w-98 text-center">
+              <p className="text-xl text-[#111111]">
+                {currentPartObject ? currentPartObject.name : selectedPart}{" "}
+                <span className="font-normal text-[#757575]">
+                  {currentNumber}/{totalCount}
+                </span>
+              </p>
+            </div>
+            <button onClick={() => handleNavigate(1)} aria-label="次の部位へ">
+              <HiArrowRight className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="justify-self-end">
+            <button className="flex items-center gap-2 px-6 py-2 border rounded-full border-gray-200 font-bold">
+              <SlMenu className="h-5 w-5" />
+              メニュー
+            </button>
+          </div>
         </div>
         <div>
           <div className="mt-8 flex items-center justify-center gap-4">
