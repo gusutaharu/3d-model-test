@@ -9,6 +9,7 @@ import { SlMenu } from "react-icons/sl";
 import { SlArrowDown } from "react-icons/sl";
 import { HiArrowRight } from "react-icons/hi2";
 import { HiArrowLeft } from "react-icons/hi2";
+import { RiCloseLargeLine } from "react-icons/ri";
 
 const CAMERA_VIEWS: Record<
   string,
@@ -60,7 +61,7 @@ export default function Home() {
     stripes: "#e9c46a",
     patch: "#e9c46a",
   });
-
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [flashingPart, setFlashingPart] = useState<string | null>(null);
   const cameraControlsRef = useRef<CameraControls | null>(null);
   const pendingFlashPartRef = useRef<string | null>(null);
@@ -203,7 +204,10 @@ export default function Home() {
             </button>
           </div>
           <div className="justify-self-end">
-            <button className="flex items-center gap-2 px-6 py-2 border rounded-full border-gray-200 font-bold">
+            <button
+              className="flex items-center gap-2 px-6 py-2 border rounded-full border-gray-200 font-bold"
+              onClick={() => setIsOpen(true)}
+            >
               <SlMenu className="h-5 w-5" />
               メニュー
             </button>
@@ -229,12 +233,46 @@ export default function Home() {
                     className={`text-xs mt-2  ${isSelected ? "opacity-100" : "opacity-0"}`}
                   >
                     {color.name}
-                  </div>{" "}
+                  </div>
                 </div>
               );
             })}
           </div>
         </div>
+        {isOpen && (
+          <div className="fixed top-0 left-0 w-full h-full z-100 backdrop-blur-xs bg-black/20">
+            <nav className="mt-80 pr-10 pl-40 py-10 bg-white h-full">
+              <div className="flex items-center  text-2xl">
+                <p className="font-bold">コンポーネンツ</p>
+                <span className="ml-2 text-gray-400">{PARTS_LIST.length}</span>
+                <button
+                  className="ml-auto flex items-center justify-center w-10 h-10 border rounded-full border-gray-200"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <RiCloseLargeLine />
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-10 pt-10">
+                {PARTS_LIST.map((part) => (
+                  <div
+                    key={part.id}
+                    className="flex items-center gap-4 justify-self-start hover:cursor-pointer"
+                    onClick={() => {
+                      handleSelectPart(part.id);
+                      setIsOpen(false);
+                    }}
+                  >
+                    <span
+                      className="p-1 h-1 w-1 inline-block rounded-full"
+                      style={{ backgroundColor: partColors[part.id] }}
+                    />
+                    <p className="font-bold">{part.name}</p>
+                  </div>
+                ))}
+              </div>
+            </nav>
+          </div>
+        )}
       </div>
     </>
   );
