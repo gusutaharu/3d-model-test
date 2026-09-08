@@ -49,18 +49,21 @@ const COLOR_PALETTE = [
 const PRODUCT_NAME = "スニーカー";
 const PRODUCT_PRICE = "10,000";
 
+const DEFAULT_PART_COLORS = {
+  mesh: "#1d3557",
+  laces: "#e9c46a",
+  sole: "#e9c46a",
+  caps: "#1a1a1a",
+  inner: "#1d3557",
+  band: "#2a9d8f",
+  stripes: "#e9c46a",
+  patch: "#e9c46a",
+};
+
 export default function Home() {
   const [selectedPart, setSelectedPart] = useState<string | null>("mesh");
-  const [partColors, setPartColors] = useState<Record<string, string>>({
-    mesh: "#1d3557",
-    laces: "#e9c46a",
-    sole: "#e9c46a",
-    caps: "#1a1a1a",
-    inner: "#1d3557",
-    band: "#2a9d8f",
-    stripes: "#e9c46a",
-    patch: "#e9c46a",
-  });
+  const [partColors, setPartColors] =
+    useState<Record<string, string>>(DEFAULT_PART_COLORS);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [flashingPart, setFlashingPart] = useState<string | null>(null);
   const cameraControlsRef = useRef<CameraControls | null>(null);
@@ -240,8 +243,14 @@ export default function Home() {
           </div>
         </div>
         {isOpen && (
-          <div className="fixed top-0 left-0 w-full h-full z-100 backdrop-blur-xs bg-black/20">
-            <nav className="mt-80 pr-10 pl-40 py-10 bg-white h-full">
+          <div
+            className="fixed top-0 left-0 w-full h-full z-100 backdrop-blur-xs bg-black/20"
+            onClick={() => setIsOpen(false)}
+          >
+            <nav
+              className="mt-80 pr-10 pl-40 py-10 bg-white h-full"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="flex items-center  text-2xl">
                 <p className="font-bold">コンポーネンツ</p>
                 <span className="ml-2 text-gray-400">{PARTS_LIST.length}</span>
@@ -256,7 +265,7 @@ export default function Home() {
                 {PARTS_LIST.map((part) => (
                   <div
                     key={part.id}
-                    className="flex items-center gap-4 justify-self-start hover:cursor-pointer"
+                    className="flex items-center gap-4 hover:cursor-pointer"
                     onClick={() => {
                       handleSelectPart(part.id);
                       setIsOpen(false);
