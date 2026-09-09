@@ -7,6 +7,7 @@ import { useRef, useState } from "react";
 import { RiShare2Line } from "react-icons/ri";
 import { SlMenu } from "react-icons/sl";
 import { SlArrowDown } from "react-icons/sl";
+import { SlArrowUp } from "react-icons/sl";
 import { HiArrowRight } from "react-icons/hi2";
 import { HiArrowLeft } from "react-icons/hi2";
 import { RiCloseLargeLine } from "react-icons/ri";
@@ -64,6 +65,7 @@ export default function Home() {
   const [selectedPart, setSelectedPart] = useState<string | null>("mesh");
   const [partColors, setPartColors] =
     useState<Record<string, string>>(DEFAULT_PART_COLORS);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [flashingPart, setFlashingPart] = useState<string | null>(null);
   const cameraControlsRef = useRef<CameraControls | null>(null);
@@ -126,7 +128,9 @@ export default function Home() {
 
   return (
     <>
-      <div className="canvasContainer w-full h-150 bg-gray-100">
+      <div
+        className={`canvasContainer w-full transition-all duration-300 relative bg-gray-100 ${isExpanded ? "h-[90vh]" : "h-150"}`}
+      >
         <div className="absolute top-0 left-0 z-10 px-5 py-11 flex justify-between w-full">
           <div className="flex flex-col pl-6">
             <span>{PRODUCT_NAME}</span>
@@ -183,11 +187,18 @@ export default function Home() {
           />
         </Canvas>
       </div>
-      <div className="p-8 flex flex-col items-center justify-center gap-6">
+      <div className="px-12 py-6 flex flex-col items-center justify-center gap-6">
         <div className="grid grid-cols-3 items-center w-full min-w-0">
           <div className="justify-self-start">
-            <button className="flex items-center justify-center w-10 h-10 border rounded-full border-gray-200">
-              <SlArrowDown className=" h-4 w-4 " />
+            <button
+              className="flex items-center justify-center w-10 h-10 border rounded-full border-gray-200"
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              {isExpanded ? (
+                <SlArrowUp className=" h-4 w-4 " />
+              ) : (
+                <SlArrowDown className=" h-4 w-4 " />
+              )}
             </button>
           </div>
           <div className="flex items-center justify-center">
