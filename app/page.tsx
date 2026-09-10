@@ -188,7 +188,7 @@ export default function Home() {
           />
         </Canvas>
       </div>
-      <div className="px-12 py-6 flex flex-col items-center justify-center gap-6">
+      <div className=" px-12 py-6 flex flex-col items-center justify-center gap-6">
         <div className="grid grid-cols-3 items-center w-full min-w-0">
           <div className="justify-self-start">
             <button
@@ -228,7 +228,7 @@ export default function Home() {
             </button>
           </div>
         </div>
-        <div>
+        <div className="color-menu">
           <div className="mt-8 flex items-center justify-center gap-4">
             {COLOR_PALETTE.map((color) => {
               const isSelected = selectedPart
@@ -270,7 +270,7 @@ export default function Home() {
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 style={{ transformOrigin: "bottom" }}
-                className="pb-40 pr-10 pl-40 py-10 bg-white h-full"
+                className="pt-10 pb-40 pr-10 pl-40 bg-white h-full"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center  text-2xl">
