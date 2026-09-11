@@ -2,7 +2,6 @@
 
 import { Canvas } from "@react-three/fiber";
 import { CameraControls, ContactShadows, Environment } from "@react-three/drei";
-import { AnimatePresence, motion } from "motion/react";
 import { Shoe } from "./components/shoe";
 import { useRef, useState } from "react";
 import { RiShare2Line } from "react-icons/ri";
@@ -188,7 +187,7 @@ export default function Home() {
           />
         </Canvas>
       </div>
-      <div className=" px-12 py-6 flex flex-col items-center justify-center gap-6">
+      <div className="position px-12 py-6 flex flex-col items-center justify-center gap-6">
         <div className="grid grid-cols-3 items-center w-full min-w-0">
           <div className="justify-self-start">
             <button
@@ -254,59 +253,46 @@ export default function Home() {
             })}
           </div>
         </div>
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-100 backdrop-blur-xs bg-black/20 flex flex-col justify-end"
-              onClick={() => setIsOpen(false)}
-            >
-              <motion.nav
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                style={{ transformOrigin: "bottom" }}
-                className="pt-10 pb-40 pr-10 pl-40 bg-white h-full"
-                onClick={(e) => e.stopPropagation()}
+        <div
+          className={`transition-all duration-300  fixed inset-0 z-100 backdrop-blur-xs bg-black/20 flex flex-col justify-end  ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+          onClick={() => setIsOpen(false)}
+        >
+          <nav
+            className={`mt-80 pt-10 pb-40 pr-10 pl-40 bg-white h-full transition-all duration-300 ${
+              isOpen ? "translate-y-0" : "translate-y-12"
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center  text-2xl">
+              <p className="font-bold">コンポーネンツ</p>
+              <span className="ml-2 text-gray-400">{PARTS_LIST.length}</span>
+              <button
+                className="ml-auto flex items-center justify-center w-10 h-10 border rounded-full border-gray-200"
+                onClick={() => setIsOpen(false)}
               >
-                <div className="flex items-center  text-2xl">
-                  <p className="font-bold">コンポーネンツ</p>
-                  <span className="ml-2 text-gray-400">
-                    {PARTS_LIST.length}
-                  </span>
-                  <button
-                    className="ml-auto flex items-center justify-center w-10 h-10 border rounded-full border-gray-200"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <RiCloseLargeLine />
-                  </button>
+                <RiCloseLargeLine />
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-10 pt-10">
+              {PARTS_LIST.map((part) => (
+                <div
+                  key={part.id}
+                  className="flex items-center gap-4 hover:cursor-pointer"
+                  onClick={() => {
+                    handleSelectPart(part.id);
+                    setIsOpen(false);
+                  }}
+                >
+                  <span
+                    className="p-1 h-1 w-1 inline-block rounded-full"
+                    style={{ backgroundColor: partColors[part.id] }}
+                  />
+                  <p className="font-bold">{part.name}</p>
                 </div>
-                <div className="grid grid-cols-2 gap-10 pt-10">
-                  {PARTS_LIST.map((part) => (
-                    <div
-                      key={part.id}
-                      className="flex items-center gap-4 hover:cursor-pointer"
-                      onClick={() => {
-                        handleSelectPart(part.id);
-                        setIsOpen(false);
-                      }}
-                    >
-                      <span
-                        className="p-1 h-1 w-1 inline-block rounded-full"
-                        style={{ backgroundColor: partColors[part.id] }}
-                      />
-                      <p className="font-bold">{part.name}</p>
-                    </div>
-                  ))}
-                </div>
-              </motion.nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              ))}
+            </div>
+          </nav>
+        </div>
       </div>
     </>
   );
