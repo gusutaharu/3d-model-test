@@ -187,82 +187,15 @@ export default function Home() {
           />
         </Canvas>
       </div>
-      <div className="position px-12 py-6 flex flex-col items-center justify-center gap-6">
-        <div className="grid grid-cols-3 items-center w-full min-w-0">
-          <div className="justify-self-start">
-            <button
-              className="flex items-center justify-center w-10 h-10 border rounded-full border-gray-200"
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              {isExpanded ? (
-                <SlArrowUp className=" h-4 w-4 " />
-              ) : (
-                <SlArrowDown className=" h-4 w-4 " />
-              )}
-            </button>
-          </div>
-          <div className="flex items-center justify-center">
-            <button onClick={() => handleNavigate(-1)} aria-label="前の部位へ">
-              <HiArrowLeft className="h-5 w-5" />
-            </button>
-            <div className="w-full min-w-64 max-w-98 text-center">
-              <p className="text-xl text-[#111111]">
-                {currentPartObject ? currentPartObject.name : selectedPart}{" "}
-                <span className="font-normal text-[#757575]">
-                  {currentNumber}/{totalCount}
-                </span>
-              </p>
-            </div>
-            <button onClick={() => handleNavigate(1)} aria-label="次の部位へ">
-              <HiArrowRight className="h-5 w-5" />
-            </button>
-          </div>
-          <div className="justify-self-end">
-            <button
-              className="flex items-center gap-2 px-6 py-2 border rounded-full border-gray-200 font-bold"
-              onClick={() => setIsOpen(true)}
-            >
-              <SlMenu className="h-5 w-5" />
-              メニュー
-            </button>
-          </div>
-        </div>
-        <div className="color-menu">
-          <div className="mt-8 flex items-center justify-center gap-4">
-            {COLOR_PALETTE.map((color) => {
-              const isSelected = selectedPart
-                ? partColors[selectedPart] === color.hex
-                : false;
-              return (
-                <div key={color.id} className="m-2 text-center">
-                  <button
-                    onClick={() => handleColorChange(color.hex)}
-                    className={`w-8 h-8 rounded-full border border-gray-300 transition-all ${
-                      isSelected ? "ring-1 ring-offset-3" : "hover:scale-105"
-                    }`}
-                    style={{ backgroundColor: color.hex }}
-                    title={color.name}
-                  />
-                  <div
-                    className={`text-xs mt-2  ${isSelected ? "opacity-100" : "opacity-0"}`}
-                  >
-                    {color.name}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div
-          className={`transition-all duration-300  fixed inset-0 z-100 backdrop-blur-xs bg-black/20 flex flex-col justify-end  ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
-          onClick={() => setIsOpen(false)}
-        >
-          <nav
-            className={`mt-80 pt-10 pb-40 pr-10 pl-40 bg-white h-full transition-all duration-300 ${
-              isOpen ? "translate-y-0" : "translate-y-12"
-            }`}
-            onClick={(e) => e.stopPropagation()}
-          >
+      <div
+        className={`transition-all duration-300 fixed inset-0 z-20 backdrop-blur-xs bg-black/20 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        onClick={() => setIsOpen(false)}
+      />
+      <div
+        className={`transition-all duration-300 fixed bottom-0 z-30 bg-white flex flex-col gap-6 w-full ${isOpen ? "h-[60vh]" : isExpanded ? "h-[11vh]" : "h-[27vh]"} `}
+      >
+        <nav className={`${isOpen ? "" : "hidden"}`}>
+          <div className="py-10 pr-10 pl-40">
             <div className="flex items-center  text-2xl">
               <p className="font-bold">コンポーネンツ</p>
               <span className="ml-2 text-gray-400">{PARTS_LIST.length}</span>
@@ -291,7 +224,77 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          </nav>
+          </div>
+        </nav>
+        <div className={`px-12 py-6 ${isOpen ? "hidden" : ""}`}>
+          <div className={`grid grid-cols-3 items-center w-full min-w-0`}>
+            <div className="justify-self-start">
+              <button
+                className="flex items-center justify-center w-10 h-10 border rounded-full border-gray-200"
+                onClick={() => setIsExpanded(!isExpanded)}
+              >
+                {isExpanded ? (
+                  <SlArrowUp className=" h-4 w-4 " />
+                ) : (
+                  <SlArrowDown className=" h-4 w-4 " />
+                )}
+              </button>
+            </div>
+            <div className="flex items-center justify-center">
+              <button
+                onClick={() => handleNavigate(-1)}
+                aria-label="前の部位へ"
+              >
+                <HiArrowLeft className="h-5 w-5" />
+              </button>
+              <div className="w-full min-w-64 max-w-98 text-center">
+                <p className="text-xl text-[#111111]">
+                  {currentPartObject ? currentPartObject.name : selectedPart}{" "}
+                  <span className="font-normal text-[#757575]">
+                    {currentNumber}/{totalCount}
+                  </span>
+                </p>
+              </div>
+              <button onClick={() => handleNavigate(1)} aria-label="次の部位へ">
+                <HiArrowRight className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="justify-self-end">
+              <button
+                className="flex items-center gap-2 px-6 py-2 border rounded-full border-gray-200 font-bold"
+                onClick={() => setIsOpen(true)}
+              >
+                <SlMenu className="h-5 w-5" />
+                メニュー
+              </button>
+            </div>
+          </div>
+          <div className={`${isExpanded || isOpen ? "hidden" : ""}`}>
+            <div className="mt-10 flex items-center justify-center gap-4">
+              {COLOR_PALETTE.map((color) => {
+                const isSelected = selectedPart
+                  ? partColors[selectedPart] === color.hex
+                  : false;
+                return (
+                  <div key={color.id} className="m-2 text-center">
+                    <button
+                      onClick={() => handleColorChange(color.hex)}
+                      className={`w-8 h-8 rounded-full border border-gray-300 transition-all ${
+                        isSelected ? "ring-1 ring-offset-3" : "hover:scale-105"
+                      }`}
+                      style={{ backgroundColor: color.hex }}
+                      title={color.name}
+                    />
+                    <div
+                      className={`text-xs mt-2  ${isSelected ? "opacity-100" : "opacity-0"}`}
+                    >
+                      {color.name}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </>
