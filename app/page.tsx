@@ -132,11 +132,11 @@ export default function Home() {
         className={`canvasContainer w-full transition-all duration-300 relative bg-gray-100 ${isExpanded ? "h-[90vh]" : "h-150"}`}
       >
         <div className="absolute top-0 left-0 z-10 px-5 py-11 flex justify-between w-full">
-          <div className="flex flex-col pl-6">
+          <div className="max-md:hidden flex flex-col pl-6">
             <span>{PRODUCT_NAME}</span>
             <span>¥{PRODUCT_PRICE}</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 max-md:ml-auto">
             <button
               className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200"
               aria-label="共有"
@@ -228,9 +228,9 @@ export default function Home() {
         </nav>
         <div className={`px-12 py-6 ${isOpen ? "hidden" : ""}`}>
           <div className={`grid grid-cols-3 items-center w-full min-w-0`}>
-            <div className="justify-self-start">
+            <div className="justify-self-start ">
               <button
-                className="flex items-center justify-center w-10 h-10 border rounded-full border-gray-200"
+                className="flex items-center justify-center w-10 h-10 border rounded-full border-gray-200 max-md:hidden"
                 onClick={() => setIsExpanded(!isExpanded)}
               >
                 {isExpanded ? (
@@ -261,7 +261,7 @@ export default function Home() {
             </div>
             <div className="justify-self-end">
               <button
-                className="flex items-center gap-2 px-6 py-2 border rounded-full border-gray-200 font-bold"
+                className="max-md:hidden flex items-center gap-2 px-6 py-2 border rounded-full border-gray-200 font-bold"
                 onClick={() => setIsOpen(true)}
               >
                 <SlMenu className="h-5 w-5" />
