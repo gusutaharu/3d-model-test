@@ -11,6 +11,8 @@ import { SlArrowUp } from "react-icons/sl";
 import { HiArrowRight } from "react-icons/hi2";
 import { HiArrowLeft } from "react-icons/hi2";
 import { RiCloseLargeLine } from "react-icons/ri";
+import { motion, useMotionValue } from "motion/react";
+import { useIsTouchDevice } from "@/hooks/useThouchDevice";
 
 const CAMERA_VIEWS: Record<
   string,
@@ -71,6 +73,9 @@ export default function Home() {
   const cameraControlsRef = useRef<CameraControls | null>(null);
   const pendingFlashPartRef = useRef<string | null>(null);
   const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const isTouchDevice = useIsTouchDevice();
+  const dragY = useMotionValue(0);
 
   const triggerFlash = (partName: string) => {
     if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
@@ -191,9 +196,29 @@ export default function Home() {
         className={`transition-all duration-300 fixed inset-0 z-20 backdrop-blur-xs bg-black/20 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
         onClick={() => setIsOpen(false)}
       />
-      <div
-        className={`transition-all duration-300 fixed bottom-0 z-30 bg-white flex flex-col gap-6 w-full ${isOpen ? "h-[60vh]" : isExpanded ? "h-[11vh]" : "h-[27vh]"} `}
+      <motion.div
+        drag={isTouchDevice ? "y" : false}
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={{ top: 0.3, bottom: 0.6 }}
+        onDragEnd={(_, info) => {
+          if (!isOpen && (info.offset.y < -50 || info.velocity.y < -200)) {
+            setIsOpen(true);
+          } else if (isOpen && (info.offset.y > 120 || info.velocity.y > 200)) {
+            setIsOpen(false);
+          }
+        }}
+        style={{ y: dragY }}
+        className={`transition-all duration-300 fixed bottom-0 z-30 bg-white flex flex-col gap-6 w-full  ${
+          isTouchDevice ? "touch-none cursor-grab active:cursor-grabbing" : ""
+        } ${
+          isOpen
+            ? "h-[65vh] px-12 pt-3 pb-12"
+            : isExpanded
+              ? "h-[15vh] px-12 py-6"
+              : "h-auto px-12 pt-3 pb-6"
+        }`}
       >
+        <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mt-2 md:hidden" />
         <nav className={`${isOpen ? "" : "hidden"}`}>
           <div className="py-10 pr-10 pl-40">
             <div className="flex items-center  text-2xl">
@@ -226,7 +251,7 @@ export default function Home() {
             </div>
           </div>
         </nav>
-        <div className={`px-12 py-6 ${isOpen ? "hidden" : ""}`}>
+        <div className={`px-12 md:py-6 ${isOpen ? "hidden" : ""}`}>
           <div className={`grid grid-cols-3 items-center w-full min-w-0`}>
             <div className="justify-self-start ">
               <button
@@ -296,7 +321,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }
