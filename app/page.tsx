@@ -194,7 +194,10 @@ export default function Home() {
       </div>
       <div
         className={`transition-all duration-300 fixed inset-0 z-20 backdrop-blur-xs bg-black/20 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
-        onClick={() => setIsOpen(false)}
+        onClick={() => {
+          setIsOpen(false);
+          setIsExpanded(false);
+        }}
       />
       <motion.div
         drag={isTouchDevice ? "y" : false}
@@ -205,6 +208,7 @@ export default function Home() {
             setIsOpen(true);
           } else if (isOpen && (info.offset.y > 120 || info.velocity.y > 200)) {
             setIsOpen(false);
+            setIsExpanded(false);
           }
         }}
         style={{ y: dragY }}
@@ -212,30 +216,30 @@ export default function Home() {
           isTouchDevice ? "touch-none cursor-grab active:cursor-grabbing" : ""
         } ${
           isOpen
-            ? "h-[65vh] px-12 pt-3 pb-12"
+            ? "h-[65vh] pt-3 pb-12 max-md:h-[80vh] max-md:rounded-xl"
             : isExpanded
-              ? "h-[15vh] px-12 py-6"
-              : "h-auto px-12 pt-3 pb-6"
+              ? "h-[10vh]"
+              : "h-auto pb-6"
         }`}
       >
-        <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mt-2 md:hidden" />
+        <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mt-1 md:hidden" />
         <nav className={`${isOpen ? "" : "hidden"}`}>
-          <div className="py-10 pr-10 pl-40">
+          <div className="py-10 pr-10 pl-40 max-md:p-0">
             <div className="flex items-center  text-2xl">
               <p className="font-bold">コンポーネンツ</p>
               <span className="ml-2 text-gray-400">{PARTS_LIST.length}</span>
               <button
-                className="ml-auto flex items-center justify-center w-10 h-10 border rounded-full border-gray-200"
+                className="ml-auto flex items-center justify-center w-10 h-10 border rounded-full border-gray-200 max-md:hidden"
                 onClick={() => setIsOpen(false)}
               >
                 <RiCloseLargeLine />
               </button>
             </div>
-            <div className="grid grid-cols-2 gap-10 pt-10">
+            <div className="grid grid-cols-2 gap-10 pt-10 max-md:flex max-md:flex-col">
               {PARTS_LIST.map((part) => (
                 <div
                   key={part.id}
-                  className="flex items-center gap-4 hover:cursor-pointer"
+                  className="flex items-center pb-6 gap-4 max-md:border-b max-md:border-gray-300"
                   onClick={() => {
                     handleSelectPart(part.id);
                     setIsOpen(false);
