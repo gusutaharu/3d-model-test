@@ -134,7 +134,7 @@ export default function Home() {
   return (
     <>
       <div
-        className={`canvasContainer w-full transition-all duration-300 relative bg-gray-100 ${isExpanded ? "h-[90vh]" : "h-150"}`}
+        className={`canvasContainer w-full transition-all duration-300 relative bg-gray-100 ${isExpanded ? "h-[90vh]" : "h-[73vh]"}`}
       >
         <div className="absolute top-0 left-0 z-10 px-5 py-11 flex justify-between w-full">
           <div className="max-md:hidden flex flex-col pl-6">
@@ -216,15 +216,15 @@ export default function Home() {
           isTouchDevice ? "touch-none cursor-grab active:cursor-grabbing" : ""
         } ${
           isOpen
-            ? "h-[65vh] pt-3 pb-12 max-md:h-[80vh] max-md:rounded-xl"
+            ? "h-[65vh] pt-3 pb-12 max-md:h-[90vh] max-md:rounded-xl"
             : isExpanded
-              ? "h-[10vh]"
-              : "h-auto pb-6"
+              ? "h-[11vh]"
+              : "h-[27vh]"
         }`}
       >
-        <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mt-1 md:hidden" />
+        <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mt-2 relative z-100 shrink-0 md:hidden" />
         <nav className={`${isOpen ? "" : "hidden"}`}>
-          <div className="py-10 pr-10 pl-40 max-md:p-0">
+          <div className="py-10 pr-10 pl-40 max-md:px-6">
             <div className="flex items-center  text-2xl">
               <p className="font-bold">コンポーネンツ</p>
               <span className="ml-2 text-gray-400">{PARTS_LIST.length}</span>
