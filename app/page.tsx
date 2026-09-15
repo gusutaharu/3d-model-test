@@ -299,13 +299,13 @@ export default function Home() {
             </div>
           </div>
           <div className={`${isExpanded || isOpen ? "hidden" : ""}`}>
-            <div className="mt-10 flex items-center justify-center gap-4">
+            <div className="mt-10 flex items-center justify-center gap-4 max-md:-mx-12 max-md:px-12 max-md:overflow-x-auto max-md:justify-start scrollbar-none">
               {COLOR_PALETTE.map((color) => {
                 const isSelected = selectedPart
                   ? partColors[selectedPart] === color.hex
                   : false;
                 return (
-                  <div key={color.id} className="m-2 text-center">
+                  <div key={color.id} className="m-2 text-center shrink-0">
                     <button
                       onClick={() => handleColorChange(color.hex)}
                       className={`w-8 h-8 rounded-full border border-gray-300 transition-all ${
